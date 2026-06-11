@@ -9,7 +9,7 @@ import { adminAuth, adminDb, FieldValue } from "@/lib/firebase-admin";
 const getBrowser = async () => {
   if (process.env.NODE_ENV === "development") {
     // For local development on Windows/Mac
-    const localPuppeteer = require("puppeteer");
+    const localPuppeteer = (await import("puppeteer")).default;
     return localPuppeteer.launch({
       headless: "new",
     });
