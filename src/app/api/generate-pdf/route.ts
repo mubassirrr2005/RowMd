@@ -3,10 +3,19 @@ import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 import { renderMarkdown } from "@/lib/markdown";
 import { getTemplateHtml, TemplateType } from "@/lib/templates";
-import { adminAuth, adminDb } from "@/lib/firebase-admin";
+import { adminAuth, adminDb, FieldValue } from "@/lib/firebase-admin";
 
-// Configure chromium for serverless
+// Configure chromium for serverless vs local
 const getBrowser = async () => {
+  if (process.env.NODE_ENV === "development") {
+    // For local development on Windows/Mac
+    const localPuppeteer = require("puppeteer");
+    return localPuppeteer.launch({
+      headless: "new",
+    });
+  }
+
+  // For production (Vercel/AWS Lambda)
   return puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
@@ -43,16 +52,15 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Daily conversion limit reached. Upgrade to Pro for more." }, { status: 403 });
           }
 
-          // Increment conversions
+          // Increment conversions using the exported FieldValue
           await userRef.update({
-            dailyConversions: adminDb.FieldValue.increment(1),
-            monthlyConversions: adminDb.FieldValue.increment(1),
-            lastConversionDate: adminDb.FieldValue.serverTimestamp(),
+            dailyConversions: FieldValue.increment(1),
+            monthlyConversions: FieldValue.increment(1),
+            lastConversionDate: FieldValue.serverTimestamp(),
           });
         }
       } catch (e) {
         console.error("Auth verification failed:", e);
-        // Continue as anonymous if verification fails, but might want to restrict this later
       }
     }
 

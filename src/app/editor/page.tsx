@@ -135,15 +135,23 @@ export default function EditorPage() {
     try {
       let rawUrl = githubUrl.trim();
       
+      // Remove trailing slashes
+      if (rawUrl.endsWith("/")) rawUrl = rawUrl.slice(0, -1);
+
       // Handle standard GitHub web URLs
       if (rawUrl.includes("github.com") && !rawUrl.includes("raw.githubusercontent.com")) {
-        // Convert blob URLs to raw
+        // Case: Specific file URL (blob)
         if (rawUrl.includes("/blob/")) {
           rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
         } 
-        // Handle repository root (try to find README.md)
-        else if (rawUrl.split("/").length <= 5) {
-          rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com") + "/main/README.md";
+        // Case: Repository root URL
+        else {
+          const parts = rawUrl.split("/");
+          // URL looks like https://github.com/user/repo
+          if (parts.length === 5) {
+            // Try main branch README.md
+            rawUrl = rawUrl.replace("github.com", "raw.githubusercontent.com") + "/main/README.md";
+          }
         }
       }
       
@@ -153,10 +161,10 @@ export default function EditorPage() {
         const fileName = rawUrl.split("/").pop() || "Imported Project";
         setTitle(fileName.replace(".md", ""));
         toast.success("GitHub content imported!");
-      } catch (err) {
-        // Try 'master' branch if 'main' fails
-        if (rawUrl.includes("/main/")) {
-          const masterUrl = rawUrl.replace("/main/", "/master/");
+      } catch (err: any) {
+        // If it was a repo root attempt, try 'master' branch if 'main' fails
+        if (rawUrl.includes("/main/README.md")) {
+          const masterUrl = rawUrl.replace("/main/README.md", "/master/README.md");
           const response = await axios.get(masterUrl);
           setMarkdown(response.data);
           const fileName = masterUrl.split("/").pop() || "Imported Project";
@@ -168,7 +176,12 @@ export default function EditorPage() {
       }
     } catch (error: any) {
       console.error("Import error:", error);
-      toast.error("Failed to import. Ensure the URL is correct and points to a Markdown file.");
+      const status = error.response?.status;
+      if (status === 404) {
+        toast.error("Markdown file not found. Check the URL and branch name.");
+      } else {
+        toast.error("Failed to import. Ensure the repo is public or the URL is correct.");
+      }
     } finally {
       setIsImporting(false);
     }
