@@ -102,3 +102,9 @@
     @apply font-sans;
   }
 }
+
+.black-ops-one-regular {
+  font-family: var(--font-black-ops), system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
