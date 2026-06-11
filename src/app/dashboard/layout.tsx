@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Logo } from "@/components/ui/logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,9 +54,7 @@ export default function DashboardLayout({
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border/40 bg-card/30 backdrop-blur-xl">
         <div className="flex h-16 items-center gap-2 border-b border-border/40 px-6">
-          <div className="flex h-8 w-8 items-center justify-center rounded bg-primary">
-            <FileText className="h-5 w-5 text-primary-foreground" />
-          </div>
+          <Logo className="h-8 w-8" />
           <span className="text-xl font-bold tracking-tight">RowMD</span>
         </div>
         <div className="flex flex-col gap-2 p-4">

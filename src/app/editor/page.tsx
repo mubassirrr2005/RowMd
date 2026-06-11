@@ -268,7 +268,7 @@ export default function EditorPage() {
             </Button>
           </Link>
           <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-primary" />
+            <Logo className="h-6 w-6" />
             <Input 
               value={title} 
               onChange={(e) => setTitle(e.target.value)}

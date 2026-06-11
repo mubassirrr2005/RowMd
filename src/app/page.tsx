@@ -28,6 +28,8 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+import { Logo } from "@/components/ui/logo";
+
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background selection:bg-primary/20">
@@ -35,9 +37,7 @@ export default function LandingPage() {
       <header className="fixed top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <FileText className="h-5 w-5 text-primary-foreground" />
-            </div>
+            <Logo className="h-8 w-8" />
             <span className="text-xl font-bold tracking-tight">RowMD</span>
           </div>
           <nav className="hidden md:flex gap-6">
@@ -264,9 +264,7 @@ export default function LandingPage() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded bg-primary">
-                <FileText className="h-4 w-4 text-primary-foreground" />
-              </div>
+              <Logo className="h-6 w-6" />
               <span className="text-lg font-bold tracking-tight">RowMD</span>
             </div>
             <p className="text-sm text-muted-foreground">© 2026 RowMD. All rights reserved.</p>
