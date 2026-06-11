@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 import { getApps, initializeApp, cert } from "firebase-admin/app";
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
+import { getFirestore, FieldValue, Firestore } from "firebase-admin/firestore";
+import { getAuth, Auth } from "firebase-admin/auth";
 
 const firebaseAdminConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -9,13 +9,24 @@ const firebaseAdminConfig = {
   privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
 };
 
-if (!getApps().length) {
-  initializeApp({
-    credential: cert(firebaseAdminConfig),
-  });
-}
+let adminDb: Firestore | null = null;
+let adminAuth: Auth | null = null;
 
-const adminDb = getFirestore();
-const adminAuth = getAuth();
+if (!getApps().length) {
+  try {
+    if (firebaseAdminConfig.privateKey && firebaseAdminConfig.privateKey.includes("BEGIN PRIVATE KEY") && !firebaseAdminConfig.privateKey.includes("...")) {
+      initializeApp({
+        credential: cert(firebaseAdminConfig as any),
+      });
+      adminDb = getFirestore();
+      adminAuth = getAuth();
+    }
+  } catch (error) {
+    console.error("Firebase admin initialization error", error);
+  }
+} else {
+  adminDb = getFirestore();
+  adminAuth = getAuth();
+}
 
 export { adminDb, adminAuth, FieldValue };

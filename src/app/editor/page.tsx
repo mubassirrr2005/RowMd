@@ -54,6 +54,7 @@ import {
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
 import { templates, TemplateType } from "@/lib/templates";
+import { Logo } from "@/components/ui/logo";
 
 export default function EditorPage() {
   const [markdown, setMarkdown] = useState("# Welcome to RowMD\n\nStart writing your documentation here...");

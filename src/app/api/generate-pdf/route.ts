@@ -11,16 +11,15 @@ const getBrowser = async () => {
     // For local development on Windows/Mac
     const localPuppeteer = (await import("puppeteer")).default;
     return localPuppeteer.launch({
-      headless: "new",
+      headless: true,
     });
   }
 
   // For production (Vercel/AWS Lambda)
   return puppeteer.launch({
     args: chromium.args,
-    defaultViewport: chromium.defaultViewport,
     executablePath: await chromium.executablePath(),
-    headless: chromium.headless,
+    headless: true,
   });
 };
 
@@ -34,7 +33,7 @@ export async function POST(req: NextRequest) {
 
     // 0. Verify User and Usage
     let userId = null;
-    if (idToken) {
+    if (idToken && adminAuth && adminDb) {
       try {
         const decodedToken = await adminAuth.verifyIdToken(idToken);
         userId = decodedToken.uid;
@@ -75,7 +74,7 @@ export async function POST(req: NextRequest) {
     const page = await browser.newPage();
 
     // Set content and wait for it to be ready
-    await page.setContent(fullHtml, { waitUntil: "networkidle0" });
+    await page.setContent(fullHtml, { waitUntil: "load" });
 
     // 4. Generate PDF
     const pdfBuffer = await page.pdf({
@@ -92,7 +91,7 @@ export async function POST(req: NextRequest) {
     await browser.close();
 
     // 5. Return PDF
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(Buffer.from(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${title || "document"}.pdf"`,

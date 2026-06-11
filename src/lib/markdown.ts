@@ -4,7 +4,7 @@ import hljs from "highlight.js";
 // Import highlight.js styles (this would typically be in globals.css or component)
 // but we'll handle it via injecting into the preview iframe or container.
 
-const md = new MarkdownIt({
+const md: MarkdownIt = new MarkdownIt({
   html: true,
   linkify: true,
   typographer: true,
@@ -16,7 +16,16 @@ const md = new MarkdownIt({
         }</code></pre>`;
       } catch (__) {}
     }
-    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`;
+    // Simple HTML escape as fallback
+    const escapeHtml = (unsafe: string) => {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+    return `<pre class="hljs"><code>${escapeHtml(str)}</code></pre>`;
   },
 });
 
