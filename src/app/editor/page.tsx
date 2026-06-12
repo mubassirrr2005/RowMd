@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import Editor from "@monaco-editor/react";
 import { renderMarkdown } from "@/lib/markdown";
 import { Button } from "@/components/ui/button";
@@ -56,7 +56,7 @@ import { Logo } from "@/components/ui/logo";
 
 export default function EditorPage() {
   const [markdown, setMarkdown] = useState("# Welcome to RowMD\n\nStart writing your documentation here...");
-  const [html, setHtml] = useState("");
+  const html = useMemo(() => renderMarkdown(markdown), [markdown]);
   const [title, setTitle] = useState("Untitled Project");
   const [template, setTemplate] = useState<TemplateType>("github");
   const [isSaving, setIsSaving] = useState(false);
@@ -69,12 +69,9 @@ export default function EditorPage() {
   const { user } = useAuth();
   const previewRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setHtml(renderMarkdown(markdown));
-  }, [markdown]);
 
   const handleSave = async () => {
-    if (!user) {
+    if (!user || !db) {
       toast.error("Please login to save projects");
       return;
     }
@@ -93,8 +90,9 @@ export default function EditorPage() {
         updatedAt: serverTimestamp(),
       });
       toast.success("Project saved successfully!");
-    } catch (error: any) {
-      toast.error("Failed to save project: " + error.message);
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      toast.error("Failed to save project: " + errMsg);
     } finally {
       setIsSaving(false);
     }
@@ -121,7 +119,7 @@ export default function EditorPage() {
       document.body.appendChild(link);
       link.click();
       toast.success("PDF generated successfully!");
-    } catch (error: any) {
+    } catch {
       toast.error("Failed to generate PDF. Please try again.");
     } finally {
       setIsGenerating(false);
@@ -160,7 +158,7 @@ export default function EditorPage() {
         const fileName = rawUrl.split("/").pop() || "Imported Project";
         setTitle(fileName.replace(".md", ""));
         toast.success("GitHub content imported!");
-      } catch (err: any) {
+        } catch (err: unknown) {
         // If it was a repo root attempt, try 'master' branch if 'main' fails
         if (rawUrl.includes("/main/README.md")) {
           const masterUrl = rawUrl.replace("/main/README.md", "/master/README.md");
@@ -173,9 +171,9 @@ export default function EditorPage() {
           throw err;
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Import error:", error);
-      const status = error.response?.status;
+        const status = (error as { response?: { status?: number } }).response?.status;
       if (status === 404) {
         toast.error("Markdown file not found. Check the URL and branch name.");
       } else {

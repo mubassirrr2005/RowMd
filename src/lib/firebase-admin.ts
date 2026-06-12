@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import type { ServiceAccount } from "firebase-admin";
 import { getApps, initializeApp, cert } from "firebase-admin/app";
 import { getFirestore, FieldValue, Firestore } from "firebase-admin/firestore";
 import { getAuth, Auth } from "firebase-admin/auth";
@@ -16,7 +16,7 @@ if (!getApps().length) {
   try {
     if (firebaseAdminConfig.privateKey && firebaseAdminConfig.privateKey.includes("BEGIN PRIVATE KEY") && !firebaseAdminConfig.privateKey.includes("...")) {
       initializeApp({
-        credential: cert(firebaseAdminConfig as any),
+          credential: cert(firebaseAdminConfig as ServiceAccount),
       });
       adminDb = getFirestore();
       adminAuth = getAuth();

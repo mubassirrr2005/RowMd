@@ -9,7 +9,7 @@ import {
   GithubAuthProvider,
   signOut as firebaseSignOut
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, Timestamp, FieldValue } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
 interface UserProfile {
@@ -20,8 +20,8 @@ interface UserProfile {
   plan: "free" | "pro";
   dailyConversions: number;
   monthlyConversions: number;
-  lastConversionDate: any;
-  createdAt: any;
+  lastConversionDate: Timestamp | null;
+   createdAt: Timestamp | FieldValue;
 }
 
 interface AuthContextType {
@@ -41,9 +41,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth || !db) {
+      // Defer state update to avoid synchronous setState in effect
+      setTimeout(() => setLoading(false), 0);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
-      if (user) {
+      if (user && db) {
         // Fetch or create user profile in Firestore
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
@@ -75,16 +81,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signInWithGoogle = async () => {
+    if (!auth) return;
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
   };
 
   const signInWithGithub = async () => {
+    if (!auth) return;
     const provider = new GithubAuthProvider();
     await signInWithPopup(auth, provider);
   };
 
   const logout = async () => {
+    if (!auth) return;
     await firebaseSignOut(auth);
   };
 

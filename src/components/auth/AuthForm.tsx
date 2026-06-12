@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Mail } from "lucide-react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -40,6 +40,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth) {
+      toast.error("Authentication service not initialized");
+      return;
+    }
     setIsLoading(true);
     try {
       if (mode === "login") {
@@ -50,8 +54,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
         toast.success("Account created successfully!");
       }
       router.push("/dashboard");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      toast.error(errMsg);
     } finally {
       setIsLoading(false);
     }
@@ -67,8 +72,9 @@ export default function AuthForm({ mode }: AuthFormProps) {
       }
       toast.success("Successfully logged in!");
       router.push("/dashboard");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error: unknown) {
+      const errMsg = error instanceof Error ? error.message : String(error);
+      toast.error(errMsg);
     } finally {
       setIsLoading(false);
     }

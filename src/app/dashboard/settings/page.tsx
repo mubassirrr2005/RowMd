@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
+import { Timestamp } from "firebase/firestore";
 import { Zap, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
@@ -88,7 +89,7 @@ export default function SettingsPage() {
             
             <div className="pt-4 text-sm text-muted-foreground flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" />
-              Member since {profile.createdAt?.toDate ? format(profile.createdAt.toDate(), "MMM d, yyyy") : "recently"}
+               Member since {profile.createdAt && (profile.createdAt as Timestamp).toDate ? format((profile.createdAt as Timestamp).toDate(), "MMM d, yyyy") : "recently"}
             </div>
           </CardContent>
         </Card>

@@ -18,7 +18,10 @@ export default function HistoryPage() {
 
   useEffect(() => {
     const fetchHistory = async () => {
-      if (!user) return;
+      if (!user || !db) {
+        setLoading(false);
+        return;
+      }
       try {
         const q = query(
           collection(db, "projects"),
