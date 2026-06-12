@@ -32,7 +32,7 @@ const GithubIcon = ({ className }: { className?: string }) => (
 );
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
-import { db } from "@/lib/firebase";
+import { getFirebaseServices } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { 
   Dialog, 
@@ -71,6 +71,7 @@ export default function EditorPage() {
 
 
   const handleSave = async () => {
+    const { db } = getFirebaseServices();
     if (!user || !db) {
       toast.error("Please login to save projects");
       return;
@@ -170,19 +171,18 @@ export default function EditorPage() {
         } else {
           throw err;
         }
-      }
-    } catch (error: unknown) {
-      console.error("Import error:", error);
-        const status = (error as { response?: { status?: number } }).response?.status;
-      if (status === 404) {
+        }
+        } catch (error: unknown) {
+        console.error("Import error:", error);
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
         toast.error("Markdown file not found. Check the URL and branch name.");
-      } else {
+        } else {
         toast.error("Failed to import. Ensure the repo is public or the URL is correct.");
-      }
-    } finally {
-      setIsImporting(false);
-    }
-  };
+        }
+        } finally {
+        setIsImporting(false);
+        }
+        };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { db } from "@/lib/firebase";
+import { getFirebaseServices } from "@/lib/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ export default function HistoryPage() {
 
   useEffect(() => {
     const fetchHistory = async () => {
+      const { db } = getFirebaseServices();
       if (!user || !db) {
         setLoading(false);
         return;
