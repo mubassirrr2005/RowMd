@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, FileText, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 
 export default function PricingPage() {

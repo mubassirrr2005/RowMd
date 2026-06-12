@@ -134,7 +134,7 @@ export default function LandingPage() {
                       <p>- **Syntax Highlighting**</p>
                       <p className="mt-4">```javascript</p>
                       <p>function greet() {'{'}</p>
-                      <p>  console.log("Hello World");</p>
+                      <p>  console.log(&quot;Hello World&quot;);</p>
                       <p>{'}'}</p>
                       <p>```</p>
                     </div>

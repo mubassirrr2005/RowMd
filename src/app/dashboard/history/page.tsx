@@ -12,6 +12,7 @@ import { format } from "date-fns";
 
 export default function HistoryPage() {
   const { user } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +28,7 @@ export default function HistoryPage() {
         const historyData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         })).sort((a: any, b: any) => {
           const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : 0;
           const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : 0;

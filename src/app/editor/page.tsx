@@ -5,7 +5,6 @@ import Editor from "@monaco-editor/react";
 import { renderMarkdown } from "@/lib/markdown";
 import { Button } from "@/components/ui/button";
 import { 
-  FileText, 
   Download, 
   Save, 
   ChevronLeft, 
@@ -13,8 +12,7 @@ import {
   Eye,
   Code2,
   Loader2,
-  Upload,
-  Search
+  Upload
 } from "lucide-react";
 import Link from "next/link";
 

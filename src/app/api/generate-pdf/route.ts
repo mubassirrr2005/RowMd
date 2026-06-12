@@ -97,8 +97,9 @@ export async function POST(req: NextRequest) {
         "Content-Disposition": `attachment; filename="${title || "document"}.pdf"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("PDF Generation Error:", error);
-    return NextResponse.json({ error: "Failed to generate PDF: " + error.message }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: "Failed to generate PDF: " + errorMessage }, { status: 500 });
   }
 }

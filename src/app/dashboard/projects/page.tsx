@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Plus, ExternalLink, Download, Clock } from "lucide-react";
@@ -12,6 +12,7 @@ import { format } from "date-fns";
 
 export default function ProjectsPage() {
   const { user } = useAuth();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,6 +28,7 @@ export default function ProjectsPage() {
         const projectsData = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         })).sort((a: any, b: any) => {
           const dateA = a.updatedAt?.toDate ? a.updatedAt.toDate() : 0;
           const dateB = b.updatedAt?.toDate ? b.updatedAt.toDate() : 0;
