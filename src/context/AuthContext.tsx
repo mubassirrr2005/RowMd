@@ -109,14 +109,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     const { auth } = getFirebaseServices();
-    if (!auth) return;
+    if (!auth) throw new Error("Firebase Auth not initialized. Check configuration.");
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
   };
 
   const signInWithGithub = async () => {
     const { auth } = getFirebaseServices();
-    if (!auth) return;
+    if (!auth) throw new Error("Firebase Auth not initialized. Check configuration.");
     const provider = new GithubAuthProvider();
     await signInWithPopup(auth, provider);
   };
