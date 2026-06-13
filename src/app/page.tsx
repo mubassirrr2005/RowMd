@@ -29,6 +29,8 @@ const GithubIcon = ({ className }: { className?: string }) => (
 );
 
 import { Logo } from "@/components/ui/logo";
+import { GenerativeArtScene } from "@/components/ui/anomalous-matter-hero";
+import { Suspense } from "react";
 
 export default function LandingPage() {
   return (
@@ -59,8 +61,13 @@ export default function LandingPage() {
       <main className="flex-1 pt-16">
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 md:py-32">
-          {/* Subtle Grid Background */}
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          {/* Generative Art Background */}
+          <div className="absolute inset-0 -z-10">
+            <Suspense fallback={<div className="w-full h-full bg-background" />}>
+              <GenerativeArtScene />
+            </Suspense>
+            <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/60 to-background z-10" />
+          </div>
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center text-center space-y-8">
               <motion.div
