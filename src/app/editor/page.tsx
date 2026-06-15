@@ -32,7 +32,7 @@ const GithubIcon = ({ className }: { className?: string }) => (
 );
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
-import { getFirebaseServices } from "@/lib/firebase";
+import { db } from "@/lib/firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { 
   Dialog, 
@@ -71,8 +71,7 @@ export default function EditorPage() {
 
 
   const handleSave = async () => {
-    const { db } = getFirebaseServices();
-    if (!user || !db) {
+    if (!user) {
       toast.error("Please login to save projects");
       return;
     }
@@ -415,22 +414,7 @@ export default function EditorPage() {
         </div>
       </div>
       
-      {/* Styles for Preview (Highlight.js) */}
-      <style jsx global>{`
-        .prose pre { padding: 1.5rem; border-radius: 0.75rem; overflow-x: auto; margin: 1.5rem 0; }
-        .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-        .hljs-keyword { color: #c678dd; }
-        .hljs-string { color: #98c379; }
-        .hljs-comment { color: #5c6370; font-style: italic; }
-        .hljs-function { color: #61afef; }
-        .hljs-number { color: #d19a66; }
-        .hljs-title { color: #e5c07b; }
-        .prose h1 { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; }
-        .prose h2 { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.3rem; margin-top: 2rem; }
-        .prose blockquote { border-left: 4px solid #e2e8f0; padding-left: 1rem; color: #64748b; }
-        .prose table { width: 100%; border-collapse: collapse; }
-        .prose th, .prose td { border: 1px solid #e2e8f0; padding: 0.5rem 1rem; }
-      `}</style>
+
     </div>
   );
 }

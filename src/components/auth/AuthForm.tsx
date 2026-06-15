@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirebaseServices } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg 
@@ -40,11 +40,6 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { auth } = getFirebaseServices();
-    if (!auth) {
-      toast.error("Authentication service not initialized");
-      return;
-    }
     setIsLoading(true);
     try {
       if (mode === "login") {
