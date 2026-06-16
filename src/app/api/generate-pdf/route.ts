@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         const decodedToken = await adminAuth.verifyIdToken(idToken);
         userId = decodedToken.uid;
 
-        // Check usage tracking
+         // Check usage tracking
         const userRef = adminDb.collection("users").doc(userId);
         const userDoc = await userRef.get();
         
@@ -47,8 +47,13 @@ export async function POST(req: NextRequest) {
           const plan = userData?.plan || "free";
           const dailyConversions = userData?.dailyConversions || 0;
           
-          if (plan === "free" && dailyConversions >= 10) {
-            return NextResponse.json({ error: "Daily conversion limit reached. Upgrade to Pro for more." }, { status: 403 });
+          // Daily limit for free plan - configurable via environment variable
+          const DAILY_LIMIT = parseInt(process.env.DAILY_CONVERSION_LIMIT || "10", 10);
+          
+          if (plan === "free" && dailyConversions >= DAILY_LIMIT) {
+            return NextResponse.json({ 
+              error: `Daily conversion limit (${DAILY_LIMIT}) reached. Please try again tomorrow.` 
+            }, { status: 403 });
           }
 
           // Increment conversions using the exported FieldValue

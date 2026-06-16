@@ -17,7 +17,7 @@ interface UserProfile {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  plan: "free" | "pro";
+  plan: "free";
   dailyConversions: number;
   monthlyConversions: number;
   lastConversionDate: any;
@@ -48,23 +48,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
 
-        if (!userDoc.exists()) {
-          const newProfile: UserProfile = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            photoURL: user.photoURL,
-            plan: "free",
-            dailyConversions: 0,
-            monthlyConversions: 0,
-            lastConversionDate: null,
-            createdAt: serverTimestamp(),
-          };
-          await setDoc(userDocRef, newProfile);
-          setProfile(newProfile);
-        } else {
-          setProfile(userDoc.data() as UserProfile);
-        }
+         if (!userDoc.exists()) {
+           const newProfile: UserProfile = {
+             uid: user.uid,
+             email: user.email,
+             displayName: user.displayName,
+             photoURL: user.photoURL,
+             plan: "free",
+             dailyConversions: 0,
+             monthlyConversions: 0,
+             lastConversionDate: null,
+             createdAt: serverTimestamp(),
+           };
+           await setDoc(userDocRef, newProfile);
+           setProfile(newProfile);
+          } else {
+            // Ensure existing profiles have the correct plan type
+            const existingData = userDoc.data();
+            let updatedData = {
+              ...existingData,
+              plan: "free" as const
+            };
+
+            // Check if dailyConversions need to be reset (based on lastConversionDate)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const lastConversionDate = existingData.lastConversionDate?.toDate?.() ?? existingData.lastConversionDate;
+            const lastConversion = lastConversionDate ? new Date(lastConversionDate) : null;
+            if (lastConversion) {
+              lastConversion.setHours(0, 0, 0, 0);
+              if (lastConversion.getTime() !== today.getTime()) {
+                // It's a new day, reset dailyConversions
+                updatedData.dailyConversions = 0;
+              }
+            } else {
+              // If no lastConversionDate, set to today and reset dailyConversions (shouldn't happen for existing users, but safe)
+              updatedData.lastConversionDate = today;
+              updatedData.dailyConversions = 0;
+            }
+
+            setProfile(updatedData as UserProfile);
+            await setDoc(userDocRef, updatedData, { merge: true });
+          }
       } else {
         setProfile(null);
       }

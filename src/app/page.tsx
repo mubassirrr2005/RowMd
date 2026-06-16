@@ -10,7 +10,8 @@ import {
   Code, 
   Layers, 
   Zap, 
-  ShieldCheck 
+  ShieldCheck,
+  Download
 } from "lucide-react";
 
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -42,11 +43,10 @@ export default function LandingPage() {
             <Logo className="h-8 w-8" />
             <span className="text-xl font-bold tracking-tight">RowMD</span>
           </div>
-          <nav className="hidden md:flex gap-6">
-            <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Features</Link>
-            <Link href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">How it Works</Link>
-            <Link href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>
-          </nav>
+        <nav className="hidden md:flex gap-6">
+          <Link href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Features</Link>
+          <Link href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">How it Works</Link>
+        </nav>
           <div className="flex items-center gap-4">
             <Link href="/login">
               <Button variant="ghost" size="sm">Login</Button>
@@ -99,23 +99,23 @@ export default function LandingPage() {
                 The most developer-friendly Markdown-to-PDF converter.
               </motion.p>
               
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex flex-col sm:flex-row gap-4"
-              >
-                <Link href="/signup">
-                  <Button size="lg" className="h-12 px-8 text-base">
-                    Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link href="#demo">
-                  <Button size="lg" variant="outline" className="h-12 px-8 text-base">
-                    View Demo
-                  </Button>
-                </Link>
-              </motion.div>
+               <motion.div 
+                 initial={{ opacity: 0, y: 20 }}
+                 animate={{ opacity: 1, y: 0 }}
+                 transition={{ duration: 0.5, delay: 0.3 }}
+                 className="flex flex-col sm:flex-row gap-4"
+               >
+                 <Link href="/signup">
+                   <Button size="lg" className="h-12 px-8 text-base">
+                     Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                   </Button>
+                 </Link>
+                 <Link href="#demo">
+                   <Button size="lg" variant="outline" className="h-12 px-8 text-base">
+                     View Demo
+                   </Button>
+                 </Link>
+               </motion.div>
 
               {/* Preview UI Box */}
               <motion.div
@@ -169,101 +169,120 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Features Grid */}
-        <section id="features" className="py-24 bg-muted/30">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-16 space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Everything you need for perfect documentation</h2>
-              <p className="text-muted-foreground md:text-lg mx-auto max-w-[700px]">Built with a developer-first mindset, focusing on quality, speed, and customization.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <FeatureCard 
-                icon={<GithubIcon className="h-6 w-6" />}
-                title="GitHub Import"
-                description="Import READMEs and documentation directly from your repositories via URL."
-              />
-              <FeatureCard 
-                icon={<Code className="h-6 w-6" />}
-                title="Syntax Highlighting"
-                description="Support for 100+ languages with beautiful themes preserved in the PDF."
-              />
-              <FeatureCard 
-                icon={<Layout className="h-6 w-6" />}
-                title="Professional Templates"
-                description="Choose from documentation, resume, ebook, or technical report templates."
-              />
-              <FeatureCard 
-                icon={<Zap className="h-6 w-6" />}
-                title="Instant Generation"
-                description="Powered by Puppeteer for pixel-perfect, high-resolution PDF rendering."
-              />
-              <FeatureCard 
-                icon={<ShieldCheck className="h-6 w-6" />}
-                title="Secure & Private"
-                description="We store your Markdown and settings securely. Your content is yours."
-              />
-              <FeatureCard 
-                icon={<Layers className="h-6 w-6" />}
-                title="Customizable"
-                description="Adjust margins, fonts, colors, and headers to match your brand."
-              />
-              <FeatureCard 
-                icon={<FileText className="h-6 w-6" />}
-                title="Live Preview"
-                description="See changes in real-time as you type or edit your Markdown."
-              />
-              <FeatureCard 
-                icon={<ArrowRight className="h-6 w-6" />}
-                title="A4 / Letter Support"
-                description="Full control over page sizes and print settings for professional printing."
-              />
-            </div>
-          </div>
-        </section>
+         {/* Features Grid */}
+         <section id="features" className="py-24 bg-muted/30">
+           <div className="container px-4 md:px-6">
+             <div className="text-center mb-16 space-y-4">
+               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Everything you need for perfect documentation</h2>
+               <p className="text-muted-foreground md:text-lg mx-auto max-w-[700px]">Built with a developer-first mindset, focusing on quality, speed, and customization.</p>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+               <FeatureCard 
+                 icon={<GithubIcon className="h-6 w-6" />}
+                 title="GitHub Import"
+                 description="Import READMEs and documentation directly from your repositories via URL."
+               />
+               <FeatureCard 
+                 icon={<Code className="h-6 w-6" />}
+                 title="Syntax Highlighting"
+                 description="Support for 100+ languages with beautiful themes preserved in the PDF."
+               />
+               <FeatureCard 
+                 icon={<Layout className="h-6 w-6" />}
+                 title="Professional Templates"
+                 description="Choose from documentation, resume, ebook, or technical report templates."
+               />
+               <FeatureCard 
+                 icon={<Zap className="h-6 w-6" />}
+                 title="Instant Generation"
+                 description="Powered by Puppeteer for pixel-perfect, high-resolution PDF rendering."
+               />
+               <FeatureCard 
+                 icon={<ShieldCheck className="h-6 w-6" />}
+                 title="Secure & Private"
+                 description="We store your Markdown and settings securely. Your content is yours."
+               />
+               <FeatureCard 
+                 icon={<Layers className="h-6 w-6" />}
+                 title="Customizable"
+                 description="Adjust margins, fonts, colors, and headers to match your brand."
+               />
+               <FeatureCard 
+                 icon={<FileText className="h-6 w-6" />}
+                 title="Live Preview"
+                 description="See changes in real-time as you type or edit your Markdown."
+               />
+               <FeatureCard 
+                 icon={<ArrowRight className="h-6 w-6" />}
+                 title="A4 / Letter Support"
+                 description="Full control over page sizes and print settings for professional printing."
+               />
+             </div>
+           </div>
+         </section>
 
-        {/* Pricing Section */}
-        <section id="pricing" className="py-24">
-          <div className="container px-4 md:px-6">
-            <div className="text-center mb-16 space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Simple, Transparent Pricing</h2>
-              <p className="text-muted-foreground md:text-lg">Start for free and upgrade when you need more power.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* Free Plan */}
-              <div className="rounded-2xl border border-border bg-card p-8 flex flex-col">
-                <h3 className="text-2xl font-bold mb-2">Free</h3>
-                <p className="text-muted-foreground mb-6">Perfect for individual projects and hobbyists.</p>
-                <div className="text-4xl font-bold mb-6">$0 <span className="text-lg font-normal text-muted-foreground">/ month</span></div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> 10 conversions per day</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Basic Templates</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Standard PDF rendering</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> GitHub Import (Public repos)</li>
-                </ul>
-                <Link href="/signup">
-                  <Button variant="outline" className="w-full">Get Started</Button>
-                </Link>
-              </div>
-              {/* Pro Plan */}
-              <div className="rounded-2xl border-2 border-primary bg-card p-8 flex flex-col relative overflow-hidden">
-                <div className="absolute top-0 right-0 bg-primary px-3 py-1 text-xs font-bold text-primary-foreground rounded-bl-lg uppercase">Recommended</div>
-                <h3 className="text-2xl font-bold mb-2">Pro</h3>
-                <p className="text-muted-foreground mb-6">For professional teams and power users.</p>
-                <div className="text-4xl font-bold mb-6">$12 <span className="text-lg font-normal text-muted-foreground">/ month</span></div>
-                <ul className="space-y-3 mb-8 flex-1">
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Unlimited conversions</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> All Pro Templates</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> High-Resolution rendering</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Private GitHub Repos</li>
-                  <li className="flex items-center gap-2"><ArrowRight className="h-4 w-4 text-primary" /> Custom fonts & branding</li>
-                </ul>
-                <Link href="/signup">
-                  <Button className="w-full">Upgrade to Pro</Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+         {/* How it Works Section */}
+         <section id="how-it-works" className="py-24">
+           <div className="container px-4 md:px-6">
+             <div className="text-center mb-16 space-y-4">
+               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">How RowMD Works</h2>
+               <p className="text-muted-foreground md:text-lg mx-auto max-w-[700px]">Simple, intuitive workflow for converting your Markdown to professional PDFs.</p>
+             </div>
+             <div className="grid gap-8 md:grid-cols-3">
+               <div className="flex flex-col items-center text-center space-y-6 p-6 rounded-2xl border border-border bg-card/50">
+                 <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
+                   <FileText className="h-6 w-6" />
+                 </div>
+                 <h3 className="text-xl font-bold mb-2">Write or Import</h3>
+                 <p className="text-muted-foreground space-y-2">
+                   Start writing in our powerful Markdown editor or import existing files from GitHub, your device, or paste content directly.
+                 </p>
+               </div>
+               <div className="flex flex-col items-center text-center space-y-6 p-6 rounded-2xl border border-border bg-card/50">
+                 <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
+                   <Zap className="h-6 w-6" />
+                 </div>
+                 <h3 className="text-xl font-bold mb-2">Customize & Preview</h3>
+                 <p className="text-muted-foreground space-y-2">
+                   Choose from professional templates, adjust styles, and see your changes in real-time with live preview.
+                 </p>
+               </div>
+               <div className="flex flex-col items-center text-center space-y-6 p-6 rounded-2xl border border-border bg-card/50">
+                 <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary mb-4">
+                   <Download className="h-6 w-6" />
+                 </div>
+                 <h3 className="text-xl font-bold mb-2">Generate & Share</h3>
+                 <p className="text-muted-foreground space-y-2">
+                   Generate beautiful PDFs with one click and share them instantly with your team or clients.
+                 </p>
+               </div>
+             </div>
+           </div>
+         </section>
+
+         {/* Call to Action Section */}
+         <section className="py-24 bg-primary/5">
+           <div className="container px-4 md:px-6">
+             <div className="text-center space-y-8">
+               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Ready to create beautiful documentation?</h2>
+               <p className="text-muted-foreground md:text-lg mx-auto max-w-[700px]">
+                 Join thousands of developers who use RowMD to convert their Markdown to professional PDFs.
+               </p>
+               <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                 <Link href="/signup">
+                   <Button size="lg" className="h-12 px-8 text-base">
+                     Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
+                   </Button>
+                 </Link>
+                 <Link href="/features">
+                   <Button size="lg" variant="outline" className="h-12 px-8 text-base">
+                     Learn More
+                   </Button>
+                 </Link>
+               </div>
+             </div>
+           </div>
+         </section>
       </main>
 
       {/* Footer */}

@@ -45,13 +45,8 @@ import {
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
-import { templates, TemplateType } from "@/lib/templates";
+
+
 import { Logo } from "@/components/ui/logo";
 
 export default function EditorPage() {
@@ -359,25 +354,7 @@ export default function EditorPage() {
             Generate PDF
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Settings2 className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase">Templates</div>
-              {(Object.keys(templates) as Array<TemplateType>).map((t) => (
-                <DropdownMenuItem 
-                  key={t} 
-                  onClick={() => setTemplate(t)}
-                  className={template === t ? "bg-accent" : ""}
-                >
-                  {templates[t].name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+
         </div>
       </header>
 
