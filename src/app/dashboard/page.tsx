@@ -10,8 +10,8 @@ import {
   ArrowRight,
   Zap,
   ShieldCheck,
-  GithubIcon
 } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { isSameDay } from "date-fns";
 import Link from "next/link";
 
@@ -89,12 +89,12 @@ export default function DashboardPage() {
                       New Project
                     </Button>
                   </Link>
-                  <Link href="/editor?import=github">
-                    <Button className="flex-1 gap-2">
-                      <GithubIcon className="h-4 w-4" />
-                      Import from GitHub
-                    </Button>
-                  </Link>
+                   <Link href="/editor?import=github">
+                     <Button className="flex-1 gap-2">
+                       <FaGithub className="h-4 w-4" />
+                       Import from GitHub
+                     </Button>
+                   </Link>
                 </div>
               </div>
             </CardContent>

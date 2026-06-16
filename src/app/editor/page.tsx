@@ -8,28 +8,14 @@ import {
   Download, 
   Save, 
   ChevronLeft, 
-  Settings2,
   Eye,
   Code2,
   Loader2,
-  Upload
+  Upload,
 } from "lucide-react";
 import Link from "next/link";
 
-const GithubIcon = ({ className }: { className?: string }) => (
-  <svg 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-    <path d="M9 18c-4.51 2-5-2-7-2" />
-  </svg>
-);
+
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { db } from "@/lib/firebase";
@@ -48,6 +34,8 @@ import axios from "axios";
 
 
 import { Logo } from "@/components/ui/logo";
+import { TemplateType } from "@/lib/templates";
+import { FaGithub } from "react-icons/fa";
 
 export default function EditorPage() {
   const [markdown, setMarkdown] = useState("# Welcome to RowMD\n\nStart writing your documentation here...");
@@ -298,12 +286,12 @@ export default function EditorPage() {
 
           <div className="flex items-center gap-2 pr-4 border-r border-border/40 mr-2">
             <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 h-8">
-                  <GithubIcon className="h-4 w-4" />
-                  Import
-                </Button>
-              </DialogTrigger>
+               <DialogTrigger asChild>
+                 <Button variant="outline" size="sm" className="gap-2 h-8">
+                   <FaGithub className="h-4 w-4" />
+                   Import
+                 </Button>
+               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Import from GitHub</DialogTitle>
@@ -321,10 +309,10 @@ export default function EditorPage() {
                     />
                     <p className="text-[10px] text-muted-foreground italic">Works with repo roots, blobs, or raw URLs.</p>
                   </div>
-                  <Button className="w-full" onClick={handleGithubImport} disabled={isImporting}>
-                    {isImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <GithubIcon className="mr-2 h-4 w-4" />}
-                    Import Markdown
-                  </Button>
+                   <Button className="w-full" onClick={handleGithubImport} disabled={isImporting}>
+                     {isImporting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FaGithub className="mr-2 h-4 w-4" />}
+                     Import Markdown
+                   </Button>
                 </div>
               </DialogContent>
             </Dialog>

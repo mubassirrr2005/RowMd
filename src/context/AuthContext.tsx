@@ -17,7 +17,7 @@ interface UserProfile {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  plan: "free";
+  plan: "free" | "pro";
   dailyConversions: number;
   monthlyConversions: number;
   lastConversionDate: any;
@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             let updatedData = {
               ...existingData,
               plan: "free" as const
-            };
+            } as UserProfile;
 
             // Check if dailyConversions need to be reset (based on lastConversionDate)
             const today = new Date();
