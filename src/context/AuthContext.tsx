@@ -61,11 +61,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
            await setDoc(userDocRef, newProfile);
            setProfile(newProfile);
           } else {
-            // Ensure existing profiles have the correct plan type
             const existingData = userDoc.data();
             let updatedData = {
               ...existingData,
-              plan: "free" as const
             } as UserProfile;
 
             // Check if dailyConversions need to be reset (based on lastConversionDate)
