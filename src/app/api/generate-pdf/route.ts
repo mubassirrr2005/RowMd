@@ -23,8 +23,10 @@ const getBrowser = async () => {
 
   // For production (Vercel serverless)
   // Disable GPU to prevent freezes in headless serverless environments
-  if (typeof chromium.setGraphicsMode === "function") {
-    chromium.setGraphicsMode(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const chr = chromium as any;
+  if (typeof chr.setGraphicsMode === "function") {
+    chr.setGraphicsMode(false);
   }
 
   return puppeteer.launch({
