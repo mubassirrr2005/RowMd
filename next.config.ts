@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Prevent bundling of heavy binary packages into serverless functions
+  serverExternalPackages: ["puppeteer-core", "@sparticuz/chromium-min"],
 };
 
 export default nextConfig;

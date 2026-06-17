@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
-    "@sparticuz/chromium": "^149.0.0",
+    "@sparticuz/chromium-min": "^149.0.0",
     "@tanstack/react-query": "^5.101.0",
     "axios": "^1.17.0",
     "class-variance-authority": "^0.7.1",
