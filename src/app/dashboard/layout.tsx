@@ -98,9 +98,6 @@ export default function DashboardLayout({
                 />
               </div>
             </div>
-            <Link href="/pricing">
-              <Button variant="link" className="mt-2 h-auto p-0 text-xs text-primary">Upgrade for unlimited</Button>
-            </Link>
           </div>
         </div>
       </aside>

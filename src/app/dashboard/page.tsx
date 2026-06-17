@@ -34,7 +34,7 @@ export default function DashboardPage() {
         <p className="text-muted-foreground">Manage your documentation projects and convert them to PDFs.</p>
       </div>
 
-       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+       <div className="grid gap-6 md:grid-cols-2">
            <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
              <CardHeader className="flex flex-row items-center justify-between pb-2">
                <CardTitle className="text-sm font-medium">Daily Credits</CardTitle>
@@ -55,16 +55,6 @@ export default function DashboardPage() {
              <CardContent>
                <div className="text-2xl font-bold">0</div>
                <p className="text-xs text-muted-foreground">Active Markdown files</p>
-             </CardContent>
-           </Card>
-           <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium">Plan</CardTitle>
-               <ShieldCheck className="h-4 w-4 text-primary" />
-             </CardHeader>
-             <CardContent>
-               <div className="text-2xl font-bold">Free</div>
-               <p className="text-xs text-muted-foreground">All features included</p>
              </CardContent>
            </Card>
          </div>

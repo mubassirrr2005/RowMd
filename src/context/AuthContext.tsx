@@ -17,7 +17,6 @@ interface UserProfile {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
-  plan: "free" | "pro";
   dailyConversions: number;
   monthlyConversions: number;
   lastConversionDate: any;
@@ -54,7 +53,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
              email: user.email,
              displayName: user.displayName,
              photoURL: user.photoURL,
-             plan: "free",
              dailyConversions: 0,
              monthlyConversions: 0,
              lastConversionDate: null,
