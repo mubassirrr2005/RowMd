@@ -4,12 +4,12 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
-import { 
-  FileText, 
-  LayoutDashboard, 
-  History, 
-  Settings, 
-  LogOut, 
+import {
+  FileText,
+  LayoutDashboard,
+  History,
+  Settings,
+  LogOut,
   Plus,
   User
 } from "lucide-react";
@@ -92,12 +92,15 @@ export default function DashboardLayout({
                 <span>{profile?.dailyConversions || 0} / 10</span>
               </div>
               <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-                <div 
-                  className="h-full bg-primary transition-all duration-500" 
-                  style={{ width: `${((profile?.dailyConversions || 0) / 10) * 100}%` }} 
+                <div
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{ width: `${((profile?.dailyConversions || 0) / 10) * 100}%` }}
                 />
               </div>
             </div>
+            <Link href="/pricing">
+              <Button variant="link" className="mt-2 h-auto p-0 text-xs text-primary">Upgrade for unlimited</Button>
+            </Link>
           </div>
         </div>
       </aside>

@@ -2,12 +2,14 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
 import { Timestamp } from "firebase/firestore";
-import { ShieldCheck } from "lucide-react";
+import { Zap, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function SettingsPage() {
   const { user, profile } = useAuth();
@@ -18,7 +20,7 @@ export default function SettingsPage() {
     <div className="space-y-8 max-w-4xl">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Profile & Settings</h1>
-        <p className="text-muted-foreground">Manage your account details and limits.</p>
+        <p className="text-muted-foreground">Manage your account details and subscription.</p>
       </div>
 
       <div className="grid gap-8">
@@ -40,35 +42,18 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label>Email</Label>
                 <Input value={user.email || ""} disabled className="bg-muted/50" />
-                <p className="text-xs text-muted-foreground">Managed by your authentication provider.</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle>Usage & Limits</CardTitle>
-            <CardDescription>Manage your current usage and limits.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label>Daily Usage</Label>
-              <div className="flex justify-between text-sm mb-1">
-                <span>{profile.dailyConversions} conversions used</span>
-                <span className="text-muted-foreground">10 maximum</span>
               </div>
               <div className="h-2 w-full rounded-full bg-muted overflow-hidden">
-                <div 
-                  className="h-full bg-primary transition-all duration-500" 
-                  style={{ width: `${(profile.dailyConversions / 10) * 100}%` }} 
+                <div
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{ width: `${(profile.dailyConversions / 10) * 100}%` }}
                 />
               </div>
             </div>
-            
+
             <div className="pt-4 text-sm text-muted-foreground flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" />
-               Member since {profile.createdAt && (profile.createdAt as Timestamp).toDate ? format((profile.createdAt as Timestamp).toDate(), "MMM d, yyyy") : "recently"}
+              Member since {profile.createdAt && (profile.createdAt as Timestamp).toDate ? format((profile.createdAt as Timestamp).toDate(), "MMM d, yyyy") : "recently"}
             </div>
           </CardContent>
         </Card>

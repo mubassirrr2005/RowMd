@@ -1,52 +1,58 @@
+// Firebase client configuration – values are injected via Vercel environment variables.
+
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "",
 };
 
-// Lazy singleton — Firebase is NOT initialized at module load time.
-// This prevents crashes during SSR/prerendering in Vercel's build phase
-// where NEXT_PUBLIC_* env vars may be empty (preview builds, static gen).
-let _app: FirebaseApp | undefined;
-let _auth: Auth | undefined;
-let _db: Firestore | undefined;
-let _storage: FirebaseStorage | undefined;
+let auth: Auth | any;
+let db: Firestore | any;
+let storage: FirebaseStorage | any;
 
-function getApp_(): FirebaseApp {
-  if (!_app) {
-    _app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+if (typeof window !== "undefined") {
+  // Lazy singleton – Firebase is initialized only when a property is accessed.
+  let _app: FirebaseApp | undefined;
+  function getApp_(): FirebaseApp {
+    if (!_app) {
+      _app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    }
+    return _app;
   }
-  return _app;
+
+  auth = new Proxy({} as Auth, {
+    get(_, prop) {
+      const a = getAuth(getApp_());
+      return Reflect.get(a, prop);
+    },
+  });
+
+  db = new Proxy({} as Firestore, {
+    get(_, prop) {
+      const d = getFirestore(getApp_());
+      return Reflect.get(d, prop);
+    },
+  });
+
+  storage = new Proxy({} as FirebaseStorage, {
+    get(_, prop) {
+      const s = getStorage(getApp_());
+      return Reflect.get(s, prop);
+    },
+  });
+} else {
+  // Server‑side rendering / build: provide empty objects to avoid Firebase init.
+  auth = {} as any;
+  db = {} as any;
+  storage = {} as any;
 }
 
-// These getters are safe to call at runtime (client-side).
-// They will throw only if Firebase config is actually invalid at runtime,
-// which is the correct behavior (shows a clear error to the developer).
-export const auth: Auth = new Proxy({} as Auth, {
-  get(_, prop) {
-    if (!_auth) _auth = getAuth(getApp_());
-    return Reflect.get(_auth, prop);
-  },
-});
-
-export const db: Firestore = new Proxy({} as Firestore, {
-  get(_, prop) {
-    if (!_db) _db = getFirestore(getApp_());
-    return Reflect.get(_db, prop);
-  },
-});
-
-export const storage: FirebaseStorage = new Proxy({} as FirebaseStorage, {
-  get(_, prop) {
-    if (!_storage) _storage = getStorage(getApp_());
-    return Reflect.get(_storage, prop);
-  },
-});
+export { auth, db, storage };
